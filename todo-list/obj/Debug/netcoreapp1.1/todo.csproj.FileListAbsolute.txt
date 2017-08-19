@@ -1,0 +1,8 @@
+C:\Users\kayob\Desktop\Epicodus\todo-list.Solutions\todo-list\bin\Debug\netcoreapp1.1\todo.deps.json
+C:\Users\kayob\Desktop\Epicodus\todo-list.Solutions\todo-list\bin\Debug\netcoreapp1.1\todo.runtimeconfig.json
+C:\Users\kayob\Desktop\Epicodus\todo-list.Solutions\todo-list\bin\Debug\netcoreapp1.1\todo.runtimeconfig.dev.json
+C:\Users\kayob\Desktop\Epicodus\todo-list.Solutions\todo-list\obj\Debug\netcoreapp1.1\todo.AssemblyInfo.cs
+C:\Users\kayob\Desktop\Epicodus\todo-list.Solutions\todo-list\bin\Debug\netcoreapp1.1\todo.dll
+C:\Users\kayob\Desktop\Epicodus\todo-list.Solutions\todo-list\bin\Debug\netcoreapp1.1\todo.pdb
+C:\Users\kayob\Desktop\Epicodus\todo-list.Solutions\todo-list\obj\Debug\netcoreapp1.1\todo.dll
+C:\Users\kayob\Desktop\Epicodus\todo-list.Solutions\todo-list\obj\Debug\netcoreapp1.1\todo.pdb
