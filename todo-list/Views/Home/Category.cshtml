@@ -1,0 +1,4 @@
+@foreach (var task in Model)
+        {
+            <h4>@task.GetDescription() | <a href="/tasks/@task.GetId()/edit">Edit</a></h4>
+        }

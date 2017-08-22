@@ -70,26 +70,19 @@ namespace ToDoList.Controllers
             return View();
         }
 
-        // [HttpPost("/tasks")]
-        // public ActionResult AddTask()
-        // {
-        //     Dictionary<string, object> model = new Dictionary<string, object>();
-        //     Category selectedCategory = Category.Find(Int32.Parse(Request.Form["category-id"]));
-        //     List<Task> categoryTasks = selectedCategory.GetTasks();
-        //     string taskDescription = Request.Form["task-description"];
-        //     Task newTask = new Task(taskDescription);
-        //     categoryTasks.Add(newTask);
-        //     model.Add("tasks", categoryTasks);
-        //     model.Add("category", selectedCategory);
-        //     return View("CategoryDetail", model);
-        // }
+        [HttpGet("/tasks/{id}/edit")]
+        public ActionResult EditTask(int id)
+        {
+            Task thisTask = Task.Find(id);
+            return View(thisTask);
+        }
 
-        // [HttpGet("/tasks/{id}")]
-        // public ActionResult TaskDetail(int id)
-        // {
-        //   Task task = Task.Find(id);
-        //   return View(task);
-        // }
-
+        [HttpPost("/tasks/{id}/edit")]
+        public ActionResult EditTaskConfirm(int id)
+        {
+            Task thisTask = Task.Find(id);
+            thisTask.UpdateDescription(Request.Form["newname"]);
+            return RedirectToAction("Index");
+        }
     }
 }
