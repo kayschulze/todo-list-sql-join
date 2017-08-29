@@ -128,8 +128,104 @@ namespace ToDoList.Models
             {
                 conn.Dispose();
             }
-            
+
             return newTask;
+        }
+
+        public void AddCategory(Category newCategory)
+        {
+            MySqlConnection conn = DB.Connection();
+            conn.Open();
+            var cmd = conn.CreateCommand() as MySqlCommand;
+            cmd.CommandText = @"INSERT INTO categories_tasks (category_id, task_id) VALUES (@CategoryId, @TaskId);";
+
+            MySqlParameter category_id = new MySqlParameter();
+            category_id.ParameterName = "@CategoryId";
+            category_id.Value = newCategory.GetId();
+            cmd.Parameters.Add(category_id);
+
+            MySqlParameter task_id = new MySqlParameter();
+            task_id.ParameterName = "@TaskId";
+            task_id.Value = _id;
+            cmd.Parameters.Add(task_id);
+
+            cmd.ExecuteNonQuery();
+            conn.Close();
+            if (conn != null)
+            {
+                conn.Dispose();
+            }
+        }
+
+
+        public List<Category> GetCategories()
+        {
+            MySqlConnection conn = DB.Connection();
+            conn.Open();
+            var cmd = conn.CreateCommand() as MySqlCommand;
+            cmd.CommandText = @"SELECT category_id FROM categories_tasks WHERE task_id = @taskId;";
+
+            MySqlParameter taskIdParameter = new MySqlParameter();
+            taskIdParameter.ParameterName = "@taskId";
+            taskIdParameter.Value = _id;
+            cmd.Parameters.Add(taskIdParameter);
+
+            var rdr = cmd.ExecuteReader() as MySqlDataReader;
+
+            List<int> categoryIds = new List<int> {};
+            while(rdr.Read())
+            {
+                int categoryId = rdr.GetInt32(0);
+                categoryIds.Add(categoryId);
+            }
+            rdr.Dispose();
+
+            List<Category> categories = new List<Category> {};
+            foreach (int categoryId in categoryIds)
+            {
+                var categoryQuery = conn.CreateCommand() as MySqlCommand;
+                categoryQuery.CommandText = @"SELECT * FROM categories WHERE id = @CategoryId;";
+
+                MySqlParameter categoryIdParameter = new MySqlParameter();
+                categoryIdParameter.ParameterName = "@CategoryId";
+                categoryIdParameter.Value = categoryId;
+                categoryQuery.Parameters.Add(categoryIdParameter);
+
+                var categoryQueryRdr = categoryQuery.ExecuteReader() as MySqlDataReader;
+                while(categoryQueryRdr.Read())
+                {
+                    int thisCategoryId = categoryQueryRdr.GetInt32(0);
+                    string categoryName = categoryQueryRdr.GetString(1);
+                    Category foundCategory = new Category(categoryName, thisCategoryId);
+                    categories.Add(foundCategory);
+                }
+                categoryQueryRdr.Dispose();
+            }
+            conn.Close();
+            if (conn != null)
+            {
+                conn.Dispose();
+            }
+            return categories;
+        }
+
+        public void Delete()
+        {
+          SqlConnection conn = DB.Connection();
+          conn.Open();
+
+          SqlCommand cmd = new SqlCommand("DELETE FROM tasks WHERE id = @TaskId; DELETE FROM categories_tasks WHERE task_id = @TaskId;", conn);
+          SqlParameter taskIdParameter = new SqlParameter();
+          taskIdParameter.ParameterName = "@TaskId";
+          taskIdParameter.Value = this.GetId();
+
+          cmd.Parameters.Add(taskIdParameter);
+          cmd.ExecuteNonQuery();
+
+          if (conn != null)
+          {
+            conn.Close();
+          }
         }
 
         public static void DeleteAll()
